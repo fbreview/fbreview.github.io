@@ -1,219 +1,208 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="utf-8">
-    <title>Review</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <head>
+        <meta charset="utf-8">
+        <title>Review</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <!-- Loading Bootstrap -->
-    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet">
-    <!-- Loading Flat UI -->
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/flat-ui/2.3.0/css/flat-ui.css" rel="stylesheet">
-    <link href="../reviews/assets/css/style.css" rel="stylesheet">
-  </head>
-  <body>
-    <div class="container">
-      <h4>Todo list</h4>
-      <!-- Nav tabs -->
-        <ul class="nav nav-tabs" style="display:inline-block;">
-            <li class="nav-item">
-                <a class="nav-link active" data-toggle="tab" href="#active">Active</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" data-toggle="tab" href="#pending">Pending</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" data-toggle="tab" href="#history">History</a>
-            </li>
-        </ul>
-      <button class="add-button btn btn-primary" data-toggle="modal" data-target="#AddModal">+</button>
-      <!-- Add Data Modal -->
-        <div class="modal fade" id="AddModal" tabindex="-1" role="dialog" aria-labelledby="AddModal" aria-hidden="true">
-            <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Add More Data</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
+        <!-- Loading Bootstrap -->
+        <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet">
+        <!-- Loading Flat UI -->
+        <link href="https://cdnjs.cloudflare.com/ajax/libs/flat-ui/2.3.0/css/flat-ui.css" rel="stylesheet">
+        <link href="assets/css/style.css" rel="stylesheet">
+    </head>
+    <body>
+        <noscript>
+            You need to enable JavaScript to run this app.
+        </noscript>
+        <div class="wrapper">
+            <div id="formAlert" class="alert alert-danger alert-dismissible fade show" role="alert" style="display: none;">
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
                 </button>
-                </div>
-                <div class="modal-body">
-                    <form action="readwrite.php" method="post">
-                        <div class="form-row align-items-center">
-                            <div class="col-auto">
-                                <label for="inlineFormInputGroup">Paid *</label>
-                                <select class="form-control custom-select mb-2" name="paid-form" required>
-                                    <option value="">Choose...</option>
-                                    <option value="0">Yes</option>
-                                    <option value="1">No</option>
-                                </select>
-                            </div>
-                            <div class="col-auto">
-                                <label for="inlineFormInputGroup">PayPal Amount *</label>
-                                <input type="text" class="form-control mb-2" name="paypal-form" placeholder="Enter Amount" required>
-                            </div>
-                            <div class="col-auto">
-                                <label for="inlineFormInputGroup">Facebook Link</label>
-                                <input type="text" class="form-control mb-2" name="facebook-form" placeholder="Message Link">
-                            </div>
-                            <div class="col-auto">
-                                <label for="inlineFormInputGroup">Seller Email</label>
-                                <div class="input-group mb-2">
-                                    <div class="input-group-prepend">
-                                        <div class="input-group-text">@</div>
-                                    </div>
-                                    <input type="text" class="form-control" name="email-form" placeholder="seller">
+                <div id="error-message"></div> <!-- Error message is dynamically generated -->
+            </div>
+            <h2>Welcome to online spreadsheet</h2>
+            <!-- Nav tabs -->
+            <ul class="nav nav-tabs" style="display:inline-block;">
+                <li class="nav-item">
+                    <a class="nav-link active" data-toggle="tab" href="#loginbox">Login</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" data-toggle="tab" href="#signupbox">Sign Up</a>
+                </li>
+            </ul>
+            <div class="tab-content">
+                <div class="tab-pane fade show active" id="loginbox">
+                    <div class="card">
+                        <div class="card-body">
+                            <h4>Please login or create a new account by pressing sign up button</h4>
+                            <div class="input-group mb-3">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text" id="basic-addon1">@</span>
                                 </div>
+                                <input type="text" id="txtEmail" class="form-control" name="username" placeholder="Email Address" required="" autofocus="" />                                    
                             </div>
-                            <div class="col-auto">
-                                <label for="inlineFormInputGroup">Amazon Link *</label>
-                                <input type="text" class="form-control mb-2" name="amazon-form" placeholder="Amazon Link" required>
+                            <div class="input-group mb-3">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text">#</span>
+                                </div>
+                                <input type="password" id="txtPassword" class="form-control" name="password" placeholder="Password" required=""/>      
                             </div>
-                            <div class="col-auto">
-                                <label for="inlineFormInputGroup">Refund type *</label>
-                                <select class="form-control custom-select mb-2" name="refund-form" required>
-                                    <option value="">Choose...</option>
-                                    <option value="0">After Order</option>
-                                    <option value="1">After Ship</option>
-                                    <option value="2">After Review</option>
-                                </select>
-                            </div>
-                            <div class="col-auto">
-                                <label for="inlineFormInputGroup">Review *</label>
-                                <select class="form-control custom-select mb-2" name="review-form" required>
-                                    <option value="">Choose...</option>
-                                    <option value="0">Done</option>
-                                    <option value="1">Not Done</option>
-                                    <option value="2">Not Needed</option>
-                                </select>
-                            </div>
+                            <label class="checkbox">
+                                <input type="checkbox" value="remember-me" id="rememberMe" name="rememberMe"> Remember me
+                            </label>
+                            <button id="btnlogin" class="btn btn-lg btn-primary" type="submit">Login</button>   
+                            <div class="form-group">
+                                <div class="col-md-12 control">
+                                    <div style="border-top: 1px solid#888; padding-top:15px; font-size:85%" >
+                                        Don't have an account! 
+                                        <a href="#" onClick="$('#loginbox').hide(); $('#signupbox').show()">
+                                            Sign Up Here
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>   
                         </div>
-                        <button type="submit" name="submit" class="btn btn-primary">Submit</button>
-                    </form>
+                    </div>
                 </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <div class="tab-pane fade" id="signupbox">
+                    <div class="card">
+                        <div class="card-title">
+                            <h4 style="float: left;">Sign Up</h4>
+                            <div style="float:right;"><a data-toggle="tab" href="#loginbox" role="tab">Sign In</a></div>
+                        </div>
+                        <div class="card-body" >
+                            <form id="signupform" class="form-horizontal" role="form">
+                                <div id="signupalert" style="display:none" class="alert alert-danger">
+                                    <p>Error:</p>
+                                    <span></span>
+                                </div>
+                                <div class="form-group">
+                                    <label for="email" class="col-md-3 control-label">Email</label>
+                                    <div class="col-md-9">
+                                        <input type="text" class="form-control" name="email" placeholder="Email Address">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="firstname" class="col-md-3 control-label">First Name</label>
+                                    <div class="col-md-9">
+                                        <input type="text" class="form-control" name="firstname" placeholder="First Name">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="lastname" class="col-md-3 control-label">Last Name</label>
+                                    <div class="col-md-9">
+                                        <input type="text" class="form-control" name="lastname" placeholder="Last Name">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="password" class="col-md-3 control-label">Password</label>
+                                    <div class="col-md-9">
+                                        <input type="password" class="form-control" name="passwd" placeholder="Password">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="icode" class="col-md-3 control-label">Invitation Code</label>
+                                    <div class="col-md-9">
+                                        <input type="text" class="form-control" name="icode" placeholder="">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <!-- Button -->                                        
+                                    <div class="col-md-offset-3 col-md-9">
+                                        <button id="btn-signup" type="button" class="btn btn-info"><i class="icon-hand-right"></i> &nbsp Sign Up</button>
+                                        <span style="margin-left:8px;">or</span>  
+                                    </div>
+                                </div>
+                                <div style="border-top: 1px solid #999; padding-top:20px"  class="form-group">
+                                    <div class="col-md-offset-3 col-md-9">
+                                        <button id="btn-fbsignup" type="button" class="btn btn-primary"><i class="icon-facebook"></i>   Sign Up with Facebook</button>
+                                    </div>                                           
+                                </div>
+                            </form>
+                        </div>
+                    </div>
                 </div>
-            </div>
             </div>
         </div>
-      <!-- Tab panes -->
-      <div class="tab-content">
-        <div class="tab-pane active container" id="active">
-            <div>
-                <h1>Material Design Responsive Table</h1>
-                <h2>Table of my other Material Design works (list was updated 08.2015)</h2>
+        <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+        <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>        
+        <script src="https://www.gstatic.com/firebasejs/4.9.1/firebase.js"></script>
+        <script>
+            var txtemail = document.getElementById("txtEmail");
+            var txtpassword = document.getElementById("txtPassword");
+            var txtrememberme = document.getElementById("rememberMe");
+            var loginbtn = document.getElementById("btnlogin");
+            var signupbtn = document.getElementById("btnsignup");
+
+            // Initialize Firebase
+            var config = {
+                apiKey: "AIzaSyD4Km5Qn83--tP7laJ5kN4Ea0OE1yr97Ls",
+                authDomain: "fb-review.firebaseapp.com",
+                databaseURL: "https://fb-review.firebaseio.com",
+                projectId: "fb-review",
+                storageBucket: "fb-review.appspot.com",
+                messagingSenderId: "363032018748"
+            };
+            firebase.initializeApp(config);
                 
-                <!-- Responsive table starts here -->
-                <!-- For correct display on small screens you must add 'data-title' to each 'td' in your table -->
-                <div class="table-responsive-vertical shadow-z-1">
-                    <!-- Table starts here -->
-                    <table class="table table-hover table-mc-light-blue">
-                        <thead>
-                            <tr>
-                                <th>ID</th>
-                                <th>Name</th>
-                                <th>Link</th>
-                                <th>Status</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td data-title="ID">1</td>
-                                <td data-title="Name">Material Design Color Palette</td>
-                                <td data-title="Link">
-                                    <a href="https://github.com/zavoloklom/material-design-color-palette" target="_blank">GitHub</a>
-                                </td>
-                                <td data-title="Status">Completed</td>
-                            </tr>
-                            <tr>
-                                <td data-title="ID">2</td>
-                                <td data-title="Name">Material Design Iconic Font</td>
-                                <td data-title="Link">
-                                    <a href="https://codepen.io/zavoloklom/pen/uqCsB" target="_blank">Codepen</a>
-                                    <a href="https://github.com/zavoloklom/material-design-iconic-font" target="_blank">GitHub</a>
-                                </td>
-                                <td data-title="Status">Completed</td>
-                            </tr>
-                            <tr>
-                                <td data-title="ID">3</td>
-                                <td data-title="Name">Material Design Hierarchical Display</td>
-                                <td data-title="Link">
-                                    <a href="https://codepen.io/zavoloklom/pen/eNaEBM" target="_blank">Codepen</a>
-                                    <a href="https://github.com/zavoloklom/material-design-hierarchical-display" target="_blank">GitHub</a>
-                                </td>
-                                <td data-title="Status">Completed</td>
-                            </tr>
-                            <tr>
-                                <td data-title="ID">4</td>
-                                <td data-title="Name">Material Design Sidebar</td>
-                                <td data-title="Link"><a href="https://codepen.io/zavoloklom/pen/dIgco" target="_blank">Codepen</a></td>
-                                <td data-title="Status">Completed</td>
-                            </tr>
-                            <tr>
-                                <td data-title="ID">5</td>
-                                <td data-title="Name">Material Design Tiles</td>
-                                <td data-title="Link">
-                                    <a href="https://codepen.io/zavoloklom/pen/wtApI" target="_blank">Codepen</a>
-                                </td>
-                                <td data-title="Status">Completed</td>
-                            </tr>
-                            <tr>
-                                <td data-title="ID">6</td>
-                                <td data-title="Name">Material Design Typography</td>
-                                <td data-title="Link">
-                                    <a href="https://codepen.io/zavoloklom/pen/IkaFL" target="_blank">Codepen</a>
-                                    <a href="https://github.com/zavoloklom/material-design-typography" target="_blank">GitHub</a>
-                                </td>
-                                <td data-title="Status">Completed</td>
-                            </tr>
-                            <tr>
-                                <td data-title="ID">7</td>
-                                <td data-title="Name">Material Design Buttons</td>
-                                <td data-title="Link">
-                                    <a href="https://codepen.io/zavoloklom/pen/Gubja" target="_blank">Codepen</a>
-                                </td>
-                                <td data-title="Status">In progress</td>
-                            </tr>
-                            <tr>
-                                <td data-title="ID">8</td>
-                                <td data-title="Name">Material Design Form Elements</td>
-                                <td data-title="Link">
-                                    <a href="https://codepen.io/zavoloklom/pen/yaozl" target="_blank">Codepen</a>
-                                </td>
-                                <td data-title="Status">In progress</td>
-                            </tr>
-                            <tr>
-                                <td data-title="ID">9</td>
-                                <td data-title="Name">Material Design Email Template</td>
-                                <td data-title="Link">
-                                    <a href="https://codepen.io/zavoloklom/pen/qEVqzx" target="_blank">Codepen</a>
-                                </td>
-                                <td data-title="Status">Completed</td>
-                            </tr>
-                            <tr>
-                                <td data-title="ID">10</td>
-                                <td data-title="Name">Material Design Animation Timing (old one)</td>
-                                <td data-title="Link">
-                                    <a href="https://codepen.io/zavoloklom/pen/Jbrho" target="_blank">Codepen</a>
-                                </td>
-                                <td data-title="Status">Completed</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>        
-            </div>
-        </div>
-        <div class="tab-pane container" id="pending">b</div>
-        <div class="tab-pane container" id="history">c</div>
-      </div>
-    </div><!-- /.container -->
-    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
-    <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.3/js/bootstrap.min.js"></script>
-    <script>
-        
-        
-    </script>
-  </body>
+            // Login Event
+            loginbtn.addEventListener('click', function(){
+                //get email and password
+                var email = txtemail.value;
+                var password = txtpassword.value;
+                var auth = firebase.auth();
+                //Sign in
+                var promise = auth.signInWithEmailAndPassword(email, password).catch(function(error) {
+                    // Handle Errors here
+                    var errorCode = error.code;
+                    var errorMessage = error.message;
+                    if (errorCode === 'auth/wrong-password') {
+                        errorMessage = "Wrong password."
+                    } else {
+                        errorMessage = "Invalid email address."
+                    }
+                    $("#formAlert").slideUp(400);    // Hide the Alert
+                    $("#error-message").html("<strong>Error!</strong>&nbsp;"+errorMessage);
+                    $("#formAlert").slideDown(400);    // Show the Alert
+                });
+            })
+
+            // Sign up event
+            signupbtn.addEventListener('click', function(){
+                //get email and password
+                //TODO: CHECK FOR REAL EMAIL
+                var email = txtemail.value;
+                var password = txtpassword.value;
+                var auth = firebase.auth();
+                //Sign in
+                var promise = auth.createUserWithEmailAndPassword(email, password).catch(function(error) {
+                    $("#formAlert").slideUp(400);    // Hide the Alert
+                    $("#error-message").html("<strong>Error!</strong>&nbsp;"+error.message);
+                    $("#formAlert").slideDown(400);    // Show the Alert
+                });
+            })
+
+            //Add a realtime listener
+            firebase.auth().onAuthStateChanged(function(firebaseUser) {
+                console.log('------------------------------------');
+                console.log(firebaseUser);
+                console.log('------------------------------------');
+                if (firebaseUser) {
+                    firebase.database().ref().child("users/"+firebaseUser.uid).set({
+                        uid: firebaseUser.uid,
+                        provider: firebaseUser.email,
+                    });
+                    //window.location = 'home.html'; //After successful login, user will be redirected to home.html
+                }else{
+                    console.log('------------------------------------');
+                    console.log("Not logged in");
+                    console.log('------------------------------------');
+                    // logoutbtn.classList.add("d-none");
+                }
+            })
+        </script>      
+    </body>
 </html>

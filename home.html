@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>Review</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- Loading Bootstrap -->
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Loading Flat UI -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/flat-ui/2.3.0/css/flat-ui.css" rel="stylesheet">
+    <link href="assets/css/style.css" rel="stylesheet">
+  </head>
+  <body>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <a class="navbar-brand" href="#">Review List</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarText">
+            <ul class="navbar-nav mr-auto">
+            <li class="nav-item active">
+                <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#">Features</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#">Pricing</a>
+            </li>
+            </ul>
+            <span class="navbar-text">
+                <button id="btnlogout" class="btn btn-lg btn-secondary float-right" type="submit">Log Out</button>   
+            </span>
+        </div>
+    </nav>
+    <div class="container">
+      <!-- Nav tabs -->
+        <ul class="nav nav-tabs" style="display:inline-block;">
+            <li class="nav-item">
+                <a class="nav-link active" data-toggle="tab" href="#active">Active</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" data-toggle="tab" href="#pending">Pending</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" data-toggle="tab" href="#history">History</a>
+            </li>
+        </ul>
+      <button class="add-button btn btn-primary" data-toggle="modal" data-target="#AddModal">+</button>
+      <!-- Add Data Modal -->
+        <div class="modal fade" id="AddModal" tabindex="-1" role="dialog" aria-labelledby="AddModal" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Add More Data</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                </div>
+                <div class="modal-body">
+                    <form action="readwrite.php" method="post">
+                        <div class="form-row align-items-center">
+                            <div class="col-auto">
+                                <label for="inlineFormInputGroup">Paid *</label>
+                                <select class="form-control custom-select mb-2" name="paid-form" required>
+                                    <option value="">Choose...</option>
+                                    <option value="0">Yes</option>
+                                    <option value="1">No</option>
+                                </select>
+                            </div>
+                            <div class="col-auto">
+                                <label for="inlineFormInputGroup">PayPal Amount *</label>
+                                <input type="text" class="form-control mb-2" name="paypal-form" placeholder="Enter Amount" required>
+                            </div>
+                            <div class="col-auto">
+                                <label for="inlineFormInputGroup">Facebook Link</label>
+                                <input type="text" class="form-control mb-2" name="facebook-form" placeholder="Message Link">
+                            </div>
+                            <div class="col-auto">
+                                <label for="inlineFormInputGroup">Seller Email</label>
+                                <div class="input-group mb-2">
+                                    <div class="input-group-prepend">
+                                        <div class="input-group-text">@</div>
+                                    </div>
+                                    <input type="text" class="form-control" name="email-form" placeholder="seller">
+                                </div>
+                            </div>
+                            <div class="col-auto">
+                                <label for="inlineFormInputGroup">Amazon Link *</label>
+                                <input type="text" class="form-control mb-2" name="amazon-form" placeholder="Amazon Link" required>
+                            </div>
+                            <div class="col-auto">
+                                <label for="inlineFormInputGroup">Refund type *</label>
+                                <select class="form-control custom-select mb-2" name="refund-form" required>
+                                    <option value="">Choose...</option>
+                                    <option value="0">After Order</option>
+                                    <option value="1">After Ship</option>
+                                    <option value="2">After Review</option>
+                                </select>
+                            </div>
+                            <div class="col-auto">
+                                <label for="inlineFormInputGroup">Review *</label>
+                                <select class="form-control custom-select mb-2" name="review-form" required>
+                                    <option value="">Choose...</option>
+                                    <option value="0">Done</option>
+                                    <option value="1">Not Done</option>
+                                    <option value="2">Not Needed</option>
+                                </select>
+                            </div>
+                        </div>
+                        <button type="submit" name="submit" class="btn btn-primary">Submit</button>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+            </div>
+        </div>
+      <!-- Tab panes -->
+      <div class="tab-content">
+        <div class="tab-pane fade show active" id="active">
+            <div>
+                <!-- Responsive table starts here -->
+                <!-- For correct display on small screens you must add 'data-title' to each 'td' in your table -->
+                <div class="table-responsive-vertical shadow-z-1">
+                    <!-- Table starts here -->
+                    <table class="table table-hover table-mc-light-blue">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Name</th>
+                                <th>Link</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td data-title="ID">1</td>
+                                <td data-title="Name">Material Design Color Palette</td>
+                                <td data-title="Link">
+                                    <a href="https://github.com/zavoloklom/material-design-color-palette" target="_blank">GitHub</a>
+                                </td>
+                                <td data-title="Status">Completed</td>
+                            </tr>
+                            <tr>
+                                <td data-title="ID">2</td>
+                                <td data-title="Name">Material Design Iconic Font</td>
+                                <td data-title="Link">
+                                    <a href="https://codepen.io/zavoloklom/pen/uqCsB" target="_blank">Codepen</a>
+                                    <a href="https://github.com/zavoloklom/material-design-iconic-font" target="_blank">GitHub</a>
+                                </td>
+                                <td data-title="Status">Completed</td>
+                            </tr>
+                            <tr>
+                                <td data-title="ID">3</td>
+                                <td data-title="Name">Material Design Hierarchical Display</td>
+                                <td data-title="Link">
+                                    <a href="https://codepen.io/zavoloklom/pen/eNaEBM" target="_blank">Codepen</a>
+                                    <a href="https://github.com/zavoloklom/material-design-hierarchical-display" target="_blank">GitHub</a>
+                                </td>
+                                <td data-title="Status">Completed</td>
+                            </tr>
+                            <tr>
+                                <td data-title="ID">4</td>
+                                <td data-title="Name">Material Design Sidebar</td>
+                                <td data-title="Link"><a href="https://codepen.io/zavoloklom/pen/dIgco" target="_blank">Codepen</a></td>
+                                <td data-title="Status">Completed</td>
+                            </tr>
+                            <tr>
+                                <td data-title="ID">5</td>
+                                <td data-title="Name">Material Design Tiles</td>
+                                <td data-title="Link">
+                                    <a href="https://codepen.io/zavoloklom/pen/wtApI" target="_blank">Codepen</a>
+                                </td>
+                                <td data-title="Status">Completed</td>
+                            </tr>
+                            <tr>
+                                <td data-title="ID">6</td>
+                                <td data-title="Name">Material Design Typography</td>
+                                <td data-title="Link">
+                                    <a href="https://codepen.io/zavoloklom/pen/IkaFL" target="_blank">Codepen</a>
+                                    <a href="https://github.com/zavoloklom/material-design-typography" target="_blank">GitHub</a>
+                                </td>
+                                <td data-title="Status">Completed</td>
+                            </tr>
+                            <tr>
+                                <td data-title="ID">7</td>
+                                <td data-title="Name">Material Design Buttons</td>
+                                <td data-title="Link">
+                                    <a href="https://codepen.io/zavoloklom/pen/Gubja" target="_blank">Codepen</a>
+                                </td>
+                                <td data-title="Status">In progress</td>
+                            </tr>
+                            <tr>
+                                <td data-title="ID">8</td>
+                                <td data-title="Name">Material Design Form Elements</td>
+                                <td data-title="Link">
+                                    <a href="https://codepen.io/zavoloklom/pen/yaozl" target="_blank">Codepen</a>
+                                </td>
+                                <td data-title="Status">In progress</td>
+                            </tr>
+                            <tr>
+                                <td data-title="ID">9</td>
+                                <td data-title="Name">Material Design Email Template</td>
+                                <td data-title="Link">
+                                    <a href="https://codepen.io/zavoloklom/pen/qEVqzx" target="_blank">Codepen</a>
+                                </td>
+                                <td data-title="Status">Completed</td>
+                            </tr>
+                            <tr>
+                                <td data-title="ID">10</td>
+                                <td data-title="Name">Material Design Animation Timing (old one)</td>
+                                <td data-title="Link">
+                                    <a href="https://codepen.io/zavoloklom/pen/Jbrho" target="_blank">Codepen</a>
+                                </td>
+                                <td data-title="Status">Completed</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>        
+            </div>
+        </div>
+        <div class="tab-pane fade" id="pending">b</div>
+        <div class="tab-pane fade" id="history">c</div>
+      </div>
+    </div><!-- /.container -->
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.3/js/bootstrap.min.js"></script>
+        
+    <script src="https://www.gstatic.com/firebasejs/4.9.1/firebase.js"></script>
+    <script src="assets/js/main.js"></script>
+
+    <script>
+//         var logoutbtn = document.getElementById("btnlogout");
+//         // Initialize Firebase
+//         var config = {
+//             apiKey: "AIzaSyD4Km5Qn83--tP7laJ5kN4Ea0OE1yr97Ls",
+//             authDomain: "fb-review.firebaseapp.com",
+//             databaseURL: "https://fb-review.firebaseio.com",
+//             projectId: "fb-review",
+//             storageBucket: "fb-review.appspot.com",
+//             messagingSenderId: "363032018748"
+//         };
+//         firebase.initializeApp(config);
+
+//           //Logout event
+//           logoutbtn.addEventListener('click', function(){
+//             firebase.auth().signOut();
+//           })
+// //         function saveToFirebase(email) {
+// //     var emailObject = {
+// //         email: email
+// //     };
+
+// //     firebase.database().ref('subscription-entries').push().set(emailObject)
+// //         .then(function(snapshot) {
+// //             success(); // some success method
+// //         }, function(error) {
+// //             console.log('error' + error);
+// //             error(); // some error method
+// //         });
+// // }
+
+// // saveToFirebase("amitozdeol@gmal.com");
+    </script>
+        
+  </body>
+</html>
