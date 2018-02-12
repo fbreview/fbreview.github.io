@@ -20,32 +20,42 @@ logoutbtn.addEventListener('click', function(){
 })
 
 var user_email = '';
+
+//============== Database ==================
+// Get a reference to the database service
+var database = firebase.database();
 //Add a realtime listener
 firebase.auth().onAuthStateChanged(function(firebaseUser) {
     if (!firebaseUser) {
         window.location = 'index.html'; //If not logged in, User will get pushed back to index.html
     }else{
         var user = firebase.auth().currentUser;
+        console.log('------------------------------------');
+        console.log(user.email);
+        console.log('------------------------------------');
         if (user != null) {
-            console.log('------------------------------------');
-            console.log(user);
-            console.log('------------------------------------');
-            user_email = user.email;
-            photoUrl = user.photoURL;
-            emailVerified = user.emailVerified;
-            uid = user.uid;  // The user's ID, unique to the Firebase project. Do NOT use
-                             // this value to authenticate with your backend server, if
-                             // you have one. Use User.getToken() instead.
-            console.log('------------------------------------');
-            console.log(user.getToken());
-            console.log('------------------------------------');
+            var get  = database.ref('users/'+user.uid);
+            get.on('value', function(snapshot) {
+               $('#username').html(snapshot.val().displayName); 
+            });
+
+            // console.log('------------------------------------');
+            // console.log(user);
+            // console.log('------------------------------------');
+            // user_email = user.email;
+            // photoUrl = user.photoURL;
+            // emailVerified = user.emailVerified;
+            // uid = user.uid;  // The user's ID, unique to the Firebase project. Do NOT use
+            //                  // this value to authenticate with your backend server, if
+            //                  // you have one. Use User.getToken() instead.
+            // console.log('------------------------------------');
+            // console.log(user.getToken());
+            // console.log('------------------------------------');
           }
     }
 });
 
-//============== Database ==================
-// Get a reference to the database service
-var database = firebase.database();
+
 
 function writeUserData(userId, name, email, imageUrl) {
     database.ref('users/' + userId).set({
