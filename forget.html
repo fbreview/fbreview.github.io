@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <title>Forget Password</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+        <!-- Loading Bootstrap -->
+        <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet">
+        <!-- Loading Flat UI -->
+        <link href="https://cdnjs.cloudflare.com/ajax/libs/flat-ui/2.3.0/css/flat-ui.css" rel="stylesheet">
+        <link href="assets/css/style.css" rel="stylesheet">
+    </head>
+    <body>
+        <noscript>
+            You need to enable JavaScript to run this app.
+        </noscript>
+        <div class="wrapper">
+            <div id="formAlert" class="alert alert-danger alert-dismissible fade show" role="alert" style="display: none;">
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <div id="alert-message"></div> <!-- Alert message is dynamically generated -->
+            </div>
+            <h2>Welcome to online spreadsheet</h2>
+                <div class="card">
+                    <div class="card-body">
+                        <h4>Forget your password?</h4>
+                        <p>Enter your email address to reset your password. We'll send you a reset link. You may need to check your spam folder.</p>
+                        <div class="input-group mb-3">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">@</span>
+                            </div>
+                            <input type="text" id="forget-email" class="form-control" name="username" placeholder="Email Address" required autofocus="" />                                    
+                        </div>
+                        <button id="btnforget" class="btn btn-lg btn-primary mb-2" type="submit">Submit</button>  
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+        <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>        
+        <script src="https://www.gstatic.com/firebasejs/4.9.1/firebase.js"></script>
+        <script>
+            var forgetbtn = document.getElementById("btnforget");
+
+            // =========== Initialize Firebase =============
+            var config = {
+                apiKey: "AIzaSyD4Km5Qn83--tP7laJ5kN4Ea0OE1yr97Ls",
+                authDomain: "fb-review.firebaseapp.com",
+                databaseURL: "https://fb-review.firebaseio.com",
+                projectId: "fb-review",
+                storageBucket: "fb-review.appspot.com",
+                messagingSenderId: "363032018748"
+            };
+            firebase.initializeApp(config);
+                
+            //  =============== Forget Password ===================
+            forgetbtn.addEventListener('click', function(){
+                var auth = firebase.auth();
+                var emailAddress = $('#forget-email').val();
+
+                auth.sendPasswordResetEmail(emailAddress).then(function() {
+                    showAlert("Email Sent. Check your inbox", "alert-success");
+                }).catch(function(error) {
+                    showAlert(error.message, "alert-danger");
+                });
+            })
+
+            function showAlert(AlertMessage, alertType){
+                $("#formAlert").removeClass("alert-danger").addClass(alertType);
+                $("#formAlert").slideUp(400);    // Hide the Alert
+                $("#alert-message").html("<strong>Alert!</strong>&nbsp;"+AlertMessage);
+                $("#formAlert").slideDown(400);    // Show the Alert
+                //Slide to top of the page to show error message
+                $('body,html').animate({
+                    scrollTop: 0
+                }, 400);     
+            }
+            
+        </script>      
+    </body>
+</html>

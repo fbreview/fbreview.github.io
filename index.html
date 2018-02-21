@@ -33,6 +33,7 @@
                 </li>
             </ul>
             <div class="tab-content">
+                <!-- Login -->
                 <div class="tab-pane fade show active" id="loginbox">
                     <div class="card">
                         <div class="card-body">
@@ -43,13 +44,14 @@
                                 </div>
                                 <input type="text" id="login-email" class="form-control" name="username" placeholder="Email Address" required autofocus="" />                                    
                             </div>
-                            <div class="input-group mb-3">
+                            <div class="input-group">
                                 <div class="input-group-prepend">
                                     <span class="input-group-text">#</span>
                                 </div>
-                                <input type="password" id="login-password" class="form-control" name="password" placeholder="Password" required/>      
+                                <input type="password" id="login-password" class="form-control" name="password" placeholder="Password" required/>
                             </div>
-                            <button id="btnlogin" class="btn btn-lg btn-primary mb-2" type="submit">Login</button>   
+                            <a href="forget.html" class="mb-3" style="display: block;">Forget Password?</a>  
+                            <button id="btnlogin" class="btn btn-lg btn-primary mb-2" type="submit">Login</button>  
                             <div class="form-group">
                                 <div class="col-md-12 control">
                                     <div style="border-top: 1px solid#888; padding-top:15px; font-size:85%" >
@@ -63,6 +65,7 @@
                         </div>
                     </div>
                 </div>
+                <!-- Sign Up -->
                 <div class="tab-pane fade" id="signupbox">
                     <div class="card">
                         <div class="card-body" >
@@ -124,13 +127,30 @@
             var signup_ln       = document.getElementById("signup-ln");
             var loginbtn        = document.getElementById("btnlogin");
             var signupbtn       = document.getElementById("btnsignup");
+            var email = '';
+            var password = '';
+
+            //=========== GET parameter, Firstname of user ===============
+            function getUrlParams( prop ) {
+                var params = {};
+                var search = decodeURIComponent( window.location.href.slice( window.location.href.indexOf( '?' ) + 1 ) );
+                var definitions = search.split( '&' );
+
+                definitions.forEach( function( val, key ) {
+                    var parts = val.split( '=', 2 );
+                    params[ parts[ 0 ] ] = parts[ 1 ];
+                } );
+                return ( prop && prop in params ) ? params[ prop ] : params;
+            }
+            var loginorlogout = getUrlParams('user');
 
             //Activate signup tab when click sign up link
             $('#signuplink').on('click', function (e) {
                 e.preventDefault()
                 $('a[href="#signupbox"]').tab('show')
             })
-            // Initialize Firebase
+
+            // =========== Initialize Firebase =============
             var config = {
                 apiKey: "AIzaSyD4Km5Qn83--tP7laJ5kN4Ea0OE1yr97Ls",
                 authDomain: "fb-review.firebaseapp.com",
@@ -141,75 +161,79 @@
             };
             firebase.initializeApp(config);
                 
-            // Login Event
+            //  =============== Login ===================
             loginbtn.addEventListener('click', function(){
-                var email = login_email.value;
-                var password = login_password.value;
-                var auth = firebase.auth();
+                var auth    = firebase.auth();
+                email       = login_email.value;
+                password    = login_password.value;
+                signup_fn   = '';
+                signup_ln   = '';
                 //Sign in
                 auth.signInWithEmailAndPassword(email, password).catch(function(error) {
                     // Handle Errors here
                     var errorCode = error.code;
                     var errorMessage = error.message;
-                    if (errorCode === 'auth/wrong-password') {
-                        errorMessage = "Wrong password."
-                    } else {
-                        errorMessage = "Invalid email address."
-                    }
-                    $("#formAlert").slideUp(400);    // Hide the Alert
-                    $("#error-message").html("<strong>Error!</strong>&nbsp;"+errorMessage);
-                    $("#formAlert").slideDown(400);    // Show the Alert
+                    errorMessage = errorCode === 'auth/wrong-password' ? "Wrong password." : "Invalid email address.";
+                    showError(errorMessage);
                 });
             })
             
-            // Sign up event
+            // ================ Sign up ====================
             signupbtn.addEventListener('click', function(){
-                var email = signup_email.value;
-                var password = signup_password.value;
-                var firstname = signup_fn.value;
-                var lastname = signup_ln.value;
-                var auth = firebase.auth();
+                var auth        = firebase.auth();
+                email           = signup_email.value;
+                password        = signup_password.value;
+                signup_fn       = signup_fn.value;
+                signup_ln       = signup_ln.value;
                 //Sign in
-                auth.createUserWithEmailAndPassword(email, password).then(function success(userData){
-                    var uid = userData.uid; // The UID of recently created user on firebase
-
-                    var database = firebase.database();
-                    database.ref().child("users/"+uid).set({
-                                email: email,
-                                displayName: firstname,
-                                lastname: lastname
-                            });
-
-                }).catch(function(error) {
-                    $("#formAlert").slideUp(400);    // Hide the Alert
-                    $("#error-message").html("<strong>Error!</strong>&nbsp;"+error.message);
-                    $("#formAlert").slideDown(400);    // Show the Alert
-                    gototop();
-                });
-                
+                auth.createUserWithEmailAndPassword(email, password)
+                    .catch(function(error) {
+                        showError(error.message);
+                    });   
             })
 
             //Add a realtime listener
             firebase.auth().onAuthStateChanged(function(firebaseUser) {
                 if (firebaseUser) {
-                    var database = firebase.database();
-                    var get  = database.ref('users/'+firebaseUser.uid);
-                    get.on('value', function(snapshot) {
-                        if (snapshot.val().displayName) {
-                            window.location = 'home.html?user='+snapshot.val().displayName; //After successful login, user will be redirected to home.html
-                        }else{
-                            window.location = 'home.html?user=User'; //After successful login, user will be redirected to home.html
-                        }
-                    });
+                    // log in
+                    var database    = firebase.database();
+                    // If new user - sign up
+                    if (signup_fn.length > 0 && signup_ln.length > 0) {
+                        var db_ref = database.ref().child('users/'+firebaseUser.uid);
+                        db_ref.set({
+                                    email: email,
+                                    displayName: signup_fn,
+                                    lastname: signup_ln
+                                }).then(function(promise){
+                                    window.location = 'home.html?user='+signup_fn; //After successful login, user will be redirected to home.html
+                                });
+                    }
+                    // If old user sign in
+                    else{
+                        var db_ref      = database.ref('users/'+firebaseUser.uid);
+                        db_ref.on('value', function(snapshot) {
+                            if (snapshot.val() != null) {
+                                if (snapshot.val().displayName) {
+                                    window.location = 'home.html?user='+snapshot.val().displayName; //After successful login, user will be redirected to home.html
+                                }else{
+                                    window.location = 'home.html?user=User'; //After successful login, user will be redirected to home.html
+                                }
+                            }
+                        });
+                    }
                 }else{
-                    console.log('------------------------------------');
-                    console.log("Not logged in");
-                    console.log('------------------------------------');
-                    // logoutbtn.classList.add("d-none");
+                    // Log out
+                    if (typeof loginorlogout !== 'undefined' && loginorlogout == 'logout'){
+                        showError("You're not logged in. Please sign in first."); 
+                    }
                 }
             })
 
-            function gototop(){
+            function showError(errorMessage){
+                $("#formAlert").slideUp(400);    // Hide the Alert
+                $("#error-message").html("<strong>Error!</strong>&nbsp;"+errorMessage);
+                $("#formAlert").slideDown(400);    // Show the Alert
+                //Slide to top of the page to show error message
                 $('body,html').animate({
                     scrollTop: 0
                 }, 400);     
