@@ -8,8 +8,9 @@
     <!-- Loading Bootstrap -->
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet">
     <!-- Loading Flat UI -->
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/flat-ui/2.3.0/css/flat-ui.css" rel="stylesheet">
+    <link href="assets/css/flat-ui.min.css" rel="stylesheet">
     <link href="assets/css/style.css" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/bs4/dt-1.10.16/r-2.2.1/datatables.min.css"/>
   </head>
   <body>
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
@@ -34,96 +35,251 @@
             </span>
         </div>
     </nav>
-    <div class="container">
+    <div class="container-fluid">
+        <div id="formAlert" class="alert alert-danger alert-dismissible fade show" role="alert" style="display: none;">
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+            </button>
+            <div id="error-message"></div> <!-- Error message is dynamically generated -->
+        </div>
         <h6 id="welcome-user" style="text-transform: capitalize;">Welcome</h6>
       <!-- Nav tabs -->
         <ul class="nav nav-tabs" style="display:inline-block;">
-            <li class="nav-item">
+            <li class="nav-item float-left ">
                 <a class="nav-link active" data-toggle="tab" href="#active">Active</a>
             </li>
             <!-- <li class="nav-item">
                 <a class="nav-link" data-toggle="tab" href="#pending">Pending</a>
             </li> -->
-            <li class="nav-item">
+            <li class="nav-item float-left">
                 <a class="nav-link" data-toggle="tab" href="#history">History</a>
             </li>
         </ul>
-      <button class="add-button btn btn-primary" data-toggle="modal" data-target="#AddModal">+</button>
+      <button class="add-button float-right btn btn-primary" data-toggle="modal" data-target="#AddModal">+</button>
       <!-- Add Data Modal -->
         <div class="modal fade" id="AddModal" tabindex="-1" role="dialog" aria-labelledby="AddModal" aria-hidden="true">
             <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Add More Data</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-                </div>
-                <div class="modal-body">
-                    <div id="AddModalBody" class="form-row align-items-center">
-                        <div class="col-auto">
-                            <label for="inlineFormInputGroup">Product info *</label>
-                            <input id="add-product" type="text" maxlength="50" class="form-control mb-2" name="product-form" placeholder="Enter detail" required>
-                        </div>
-                        <div class="col-auto">
-                            <label for="inlineFormInputGroup">Cost *</label>
-                            <input id="add-cost" type="number" maxlength="3"  class="form-control mb-2" name="cost-form" placeholder="Enter cost" required>
-                        </div>
-                        <div class="col-auto">
-                            <label for="inlineFormInputGroup">Paid *</label>
-                            <select id="add-paid" class="form-control custom-select mb-2" name="paid-form" required>
-                                <option value="">Choose...</option>
-                                <option value="Yes">Yes</option>
-                                <option value="No">No</option>
-                            </select>
-                        </div>
-                        <div class="col-auto">
-                            <label for="inlineFormInputGroup">PayPal Amount *</label>
-                            <input id="add-paypal" type="text" maxlength="5" class="form-control mb-2" name="paypal-form" placeholder="Enter Amount" required>
-                        </div>
-                        <div class="col-auto">
-                            <label for="inlineFormInputGroup">Facebook Link</label>
-                            <input id="add-facebook" type="text" maxlength="200" class="form-control mb-2" name="facebook-form" placeholder="Message Link">
-                        </div>
-                        <div class="col-auto">
-                            <label for="inlineFormInputGroup">Seller Email</label>
-                            <div class="input-group mb-2">
-                                <div class="input-group-prepend">
-                                    <div class="input-group-text">@</div>
+                <div class="modal-content">
+                    <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Add More Data</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    </div>
+                    <div class="modal-body">
+                        <div id="AddModalBody" class="form-row align-items-center">
+                            <div class="col-6 col-sm-4 col-auto">
+                                <label for="inlineFormInputGroup">Product info
+                                    <span data-toggle="tooltip" data-placement="top" title="Here you enter your product name" class="fui-question-circle"></span>
+                                    <!-- <svg data-toggle="tooltip" data-placement="top" title="Here you enter your product name" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="12" height="14" viewBox="0 0 12 14">
+                                        <path d="M6.875 9.375v1.25q0 0.109-0.070 0.18t-0.18 0.070h-1.25q-0.109 0-0.18-0.070t-0.070-0.18v-1.25q0-0.109 0.070-0.18t0.18-0.070h1.25q0.109 0 0.18 0.070t0.070 0.18zM8.875 5.5q0 0.391-0.117 0.703t-0.355 0.539-0.406 0.344-0.465 0.281q-0.25 0.141-0.363 0.219t-0.203 0.187-0.090 0.227v0.25q0 0.109-0.070 0.18t-0.18 0.070h-1.25q-0.109 0-0.18-0.070t-0.070-0.18v-0.531q0-0.273 0.082-0.504t0.187-0.371 0.305-0.277 0.32-0.199 0.348-0.164q0.414-0.195 0.586-0.336t0.172-0.383q0-0.328-0.34-0.559t-0.746-0.23q-0.438 0-0.742 0.211-0.227 0.156-0.625 0.648-0.070 0.094-0.195 0.094-0.086 0-0.148-0.047l-0.844-0.641q-0.078-0.055-0.094-0.156t0.039-0.18q0.953-1.5 2.727-1.5 1.008 0 1.863 0.699t0.855 1.676zM6 2q-1.016 0-1.941 0.398t-1.594 1.066-1.066 1.594-0.398 1.941 0.398 1.941 1.066 1.594 1.594 1.066 1.941 0.398 1.941-0.398 1.594-1.066 1.066-1.594 0.398-1.941-0.398-1.941-1.066-1.594-1.594-1.066-1.941-0.398zM12 7q0 1.633-0.805 3.012t-2.184 2.184-3.012 0.805-3.012-0.805-2.184-2.184-0.805-3.012 0.805-3.012 2.184-2.184 3.012-0.805 3.012 0.805 2.184 2.184 0.805 3.012z"></path>
+                                    </svg> -->
+                                </label>
+                                <input id="add-product" type="text" maxlength="50" class="form-control mb-2" name="product-form" placeholder="Enter detail" required>
+                            </div>
+                            <div class="col-6 col-sm-4 col-auto">
+                                <label for="inlineFormInputGroup">Cost 
+                                    <span data-toggle="tooltip" data-placement="top" title="Enter how much it cost you on Amazon" class="fui-question-circle"></span>
+                                </label>
+                                <input id="add-cost" type="text" pattern="\d*" maxlength="5"  class="form-control mb-2" name="cost-form" placeholder="Enter cost" required>
+                            </div>
+                            <div class="col-6 col-sm-4 col-auto">
+                                <label for="inlineFormInputGroup">Paid
+                                    <span data-toggle="tooltip" data-placement="top" title="If seller paid or not" class="fui-question-circle"></span>
+                                </label>
+                                <select id="add-paid" class="form-control custom-select mb-2" name="paid-form" required>
+                                    <option value="">Choose...</option>
+                                    <option value="Yes">Yes</option>
+                                    <option value="No">No</option>
+                                    <option value="Not Fully">Not Fully</option>
+                                </select>
+                            </div>
+                            <div class="col-6 col-sm-4 col-auto">
+                                <label for="inlineFormInputGroup">Recieved Amount 
+                                    <span data-toggle="tooltip" data-placement="top" title="How much you recieve from seller" class="fui-question-circle"></span>
+                                </label>
+                                <input id="add-recieved" type="text" pattern="\d*" maxlength="5" class="form-control mb-2" name="recieved-form" placeholder="Enter Amount" required>
+                            </div>
+                            <div class="col-6 col-sm-4 col-auto">
+                                <label for="inlineFormInputGroup">Facebook Link
+                                    <span data-toggle="tooltip" data-placement="top" title="Link to facebook chat, this way it's easier to find seller." class="fui-question-circle"></span>
+                                </label>
+                                <input id="add-facebook" type="text" maxlength="200" class="form-control mb-2" name="facebook-form" placeholder="Message Link">
+                            </div>
+                            <div class="col-6 col-sm-4 col-auto">
+                                <label for="inlineFormInputGroup">Seller Email</label>
+                                <div class="input-group mb-2">
+                                    <div class="input-group-prepend">
+                                        <div class="input-group-text">@</div>
+                                    </div>
+                                    <input id="add-selleremail" type="text" maxlength="50" class="form-control" name="email-form" placeholder="seller">
                                 </div>
-                                <input id="add-selleremail" type="text" maxlength="50" class="form-control" name="email-form" placeholder="seller">
+                            </div>
+                            <div class="col-6 col-sm-4 col-auto">
+                                <label for="inlineFormInputGroup">Amazon Link
+                                    <span data-toggle="tooltip" data-placement="top" title="Link to Amazon product page." class="fui-question-circle"></span>
+                                </label>
+                                <input id="add-amazon" type="text" maxlength="200" class="form-control mb-2" name="amazon-form" placeholder="Amazon Link" required>
+                            </div>
+                            <div class="col-6 col-sm-4 col-auto">
+                                <label for="inlineFormInputGroup">Refund type
+                                    <span data-toggle="tooltip" data-placement="top" title="How seller wants to pay you." class="fui-question-circle"></span>
+                                </label>
+                                <select id="add-refund" class="form-control custom-select mb-2" name="refund-form" required>
+                                    <option value="">Choose...</option>
+                                    <option value="After order">After Order</option>
+                                    <option value="After Ship">After Ship</option>
+                                    <option value="After Review">After Review</option>
+                                </select>
+                            </div>
+                            <div class="col-6 col-sm-4 col-auto">
+                                <label for="inlineFormInputGroup">Review
+                                    <span data-toggle="tooltip" data-placement="top" title="Depending on your choice, color of the row will change." class="fui-question-circle"></span>
+                                </label>
+                                <select id="add-review" class="form-control custom-select mb-2" name="review-form" required>
+                                    <option value="">Choose...</option>
+                                    <option value="Done">Done</option>
+                                    <option value="Not Done">Not Done</option>
+                                    <option value="Not Needed">Not Needed</option>
+                                </select>
+                            </div>
+                            <div class="col-6 col-sm-4 col-auto">
+                                <label for="inlineFormInputGroup">Note
+                                    <span data-toggle="tooltip" data-placement="top" title="Say mean things about seller ;)" class="fui-question-circle"></span>
+                                </label>
+                                <input id="add-note" type="text" maxlength="500" class="form-control mb-2" name="note-form" placeholder="Note" required>
                             </div>
                         </div>
-                        <div class="col-auto">
-                            <label for="inlineFormInputGroup">Amazon Link *</label>
-                            <input id="add-amazon" type="text" maxlength="200" class="form-control mb-2" name="amazon-form" placeholder="Amazon Link" required>
-                        </div>
-                        <div class="col-auto">
-                            <label for="inlineFormInputGroup">Refund type *</label>
-                            <select id="add-refund" class="form-control custom-select mb-2" name="refund-form" required>
-                                <option value="">Choose...</option>
-                                <option value="After order">After Order</option>
-                                <option value="After Ship">After Ship</option>
-                                <option value="After Review">After Review</option>
-                            </select>
-                        </div>
-                        <div class="col-auto">
-                            <label for="inlineFormInputGroup">Review *</label>
-                            <select id="add-review" class="form-control custom-select mb-2" name="review-form" required>
-                                <option value="">Choose...</option>
-                                <option value="Done">Done</option>
-                                <option value="Not Done">Not Done</option>
-                                <option value="Not Needed">Not Needed</option>
-                            </select>
-                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button id="add-field" type="button" class="btn btn-info mr-auto">+ Add field</button>
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <button id="add-data" type="submit" name="submit" class="btn btn-primary">Submit</button>
                     </div>
                 </div>
-                <div class="modal-footer">
-                    <button id="add-field" type="button" class="btn btn-info mr-auto">+ Add field</button>
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    <button id="add-data" type="submit" name="submit" class="btn btn-primary">Submit</button>
+            </div>
+        </div>
+        <!-- Edit Data Modal -->
+        <div class="modal fade" id="EditModal" tabindex="-1" role="dialog" aria-labelledby="AddModal" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                    <h5 class="modal-title">Edit row - <input type="text" maxlength="50" id="edit-date" class="edit-Modaldata"/></h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    </div>
+                    <div class="modal-body">
+                        <div id="EditModalBody" class="form-row align-items-center">
+                            <div class="col-6 col-sm-4 col-auto">
+                                <label for="inlineFormInputGroup">Product info
+                                    <span data-toggle="tooltip" data-placement="top" title="Here you enter your product name" class="fui-question-circle"></span>
+                                    <!-- <svg data-toggle="tooltip" data-placement="top" title="Here you enter your product name" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="12" height="14" viewBox="0 0 12 14">
+                                        <path d="M6.875 9.375v1.25q0 0.109-0.070 0.18t-0.18 0.070h-1.25q-0.109 0-0.18-0.070t-0.070-0.18v-1.25q0-0.109 0.070-0.18t0.18-0.070h1.25q0.109 0 0.18 0.070t0.070 0.18zM8.875 5.5q0 0.391-0.117 0.703t-0.355 0.539-0.406 0.344-0.465 0.281q-0.25 0.141-0.363 0.219t-0.203 0.187-0.090 0.227v0.25q0 0.109-0.070 0.18t-0.18 0.070h-1.25q-0.109 0-0.18-0.070t-0.070-0.18v-0.531q0-0.273 0.082-0.504t0.187-0.371 0.305-0.277 0.32-0.199 0.348-0.164q0.414-0.195 0.586-0.336t0.172-0.383q0-0.328-0.34-0.559t-0.746-0.23q-0.438 0-0.742 0.211-0.227 0.156-0.625 0.648-0.070 0.094-0.195 0.094-0.086 0-0.148-0.047l-0.844-0.641q-0.078-0.055-0.094-0.156t0.039-0.18q0.953-1.5 2.727-1.5 1.008 0 1.863 0.699t0.855 1.676zM6 2q-1.016 0-1.941 0.398t-1.594 1.066-1.066 1.594-0.398 1.941 0.398 1.941 1.066 1.594 1.594 1.066 1.941 0.398 1.941-0.398 1.594-1.066 1.066-1.594 0.398-1.941-0.398-1.941-1.066-1.594-1.594-1.066-1.941-0.398zM12 7q0 1.633-0.805 3.012t-2.184 2.184-3.012 0.805-3.012-0.805-2.184-2.184-0.805-3.012 0.805-3.012 2.184-2.184 3.012-0.805 3.012 0.805 2.184 2.184 0.805 3.012z"></path>
+                                    </svg> -->
+                                </label>
+                                <input id="edit-product" type="text" maxlength="50" class="form-control mb-2 edit-Modaldata" name="product-form" placeholder="Enter detail" required>
+                            </div>
+                            <div class="col-6 col-sm-4 col-auto">
+                                <label for="inlineFormInputGroup">Cost 
+                                    <span data-toggle="tooltip" data-placement="top" title="Enter how much it cost you on Amazon" class="fui-question-circle"></span>
+                                </label>
+                                <input id="edit-cost" type="text" pattern="\d*" maxlength="5"  class="form-control mb-2 edit-Modaldata" name="cost-form" placeholder="Enter cost" required>
+                            </div>
+                            <div class="col-6 col-sm-4 col-auto">
+                                <label for="inlineFormInputGroup">Paid
+                                    <span data-toggle="tooltip" data-placement="top" title="If seller paid or not" class="fui-question-circle"></span>
+                                </label>
+                                <select id="edit-paid" class="form-control custom-select mb-2 edit-Modaldata" name="paid-form" required>
+                                    <option value="">Choose...</option>
+                                    <option value="Yes">Yes</option>
+                                    <option value="No">No</option>
+                                    <option value="Not Fully">Not Fully</option>
+                                </select>
+                            </div>
+                            <div class="col-6 col-sm-4 col-auto">
+                                <label for="inlineFormInputGroup">Recieved Amount 
+                                    <span data-toggle="tooltip" data-placement="top" title="How much you recieve from seller" class="fui-question-circle"></span>
+                                </label>
+                                <input id="edit-recieved" type="text" pattern="\d*" maxlength="5" class="form-control mb-2 edit-Modaldata" name="recieved-form" placeholder="Enter Amount" required>
+                            </div>
+                            <div class="col-6 col-sm-4 col-auto">
+                                <label for="inlineFormInputGroup">Facebook Link
+                                    <span data-toggle="tooltip" data-placement="top" title="Link to facebook chat, this way it's easier to find seller." class="fui-question-circle"></span>
+                                </label>
+                                <input id="edit-facebook" type="text" maxlength="200" class="form-control mb-2 edit-Modaldata" name="facebook-form" placeholder="Message Link">
+                            </div>
+                            <div class="col-6 col-sm-4 col-auto">
+                                <label for="inlineFormInputGroup">Seller Email</label>
+                                <div class="input-group mb-2">
+                                    <div class="input-group-prepend">
+                                        <div class="input-group-text">@</div>
+                                    </div>
+                                    <input id="edit-selleremail" type="text" maxlength="50" class="form-control edit-Modaldata" name="email-form" placeholder="seller">
+                                </div>
+                            </div>
+                            <div class="col-6 col-sm-4 col-auto">
+                                <label for="inlineFormInputGroup">Amazon Link
+                                    <span data-toggle="tooltip" data-placement="top" title="Link to Amazon product page." class="fui-question-circle"></span>
+                                </label>
+                                <input id="edit-amazon" type="text" maxlength="200" class="form-control mb-2 edit-Modaldata" name="amazon-form" placeholder="Amazon Link" required>
+                            </div>
+                            <div class="col-6 col-sm-4 col-auto">
+                                <label for="inlineFormInputGroup">Refund type
+                                    <span data-toggle="tooltip" data-placement="top" title="How seller wants to pay you." class="fui-question-circle"></span>
+                                </label>
+                                <select id="edit-refund" class="form-control custom-select mb-2 edit-Modaldata" name="refund-form" required>
+                                    <option value="">Choose...</option>
+                                    <option value="After order">After Order</option>
+                                    <option value="After Ship">After Ship</option>
+                                    <option value="After Review">After Review</option>
+                                </select>
+                            </div>
+                            <div class="col-6 col-sm-4 col-auto">
+                                <label for="inlineFormInputGroup">Review
+                                    <span data-toggle="tooltip" data-placement="top" title="Depending on your choice, color of the row will change." class="fui-question-circle"></span>
+                                </label>
+                                <select id="edit-review" class="form-control custom-select mb-2 edit-Modaldata" name="review-form" required>
+                                    <option value="">Choose...</option>
+                                    <option value="Done">Done</option>
+                                    <option value="Not Done">Not Done</option>
+                                    <option value="Not Needed">Not Needed</option>
+                                </select>
+                            </div>
+                            <div class="col-6 col-sm-4 col-auto">
+                                <label for="inlineFormInputGroup">Note
+                                    <span data-toggle="tooltip" data-placement="top" title="Say mean things about seller ;)" class="fui-question-circle"></span>
+                                </label>
+                                <input id="edit-note" type="text" maxlength="500" class="form-control mb-2 edit-Modaldata" name="note-form" placeholder="Note" required>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button id="edit-delete" type="button" class="btn btn-danger mr-auto" data-toggle="modal" data-target="#DeleteModal">Delete</button>
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <button id="edit-data-button" type="submit" name="submit" class="btn btn-primary">Submit</button>
+                    </div>
                 </div>
             </div>
+        </div>
+
+        <div id="DeleteModal" class="modal" tabindex="-1" role="dialog">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Modal title</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <p>Modal body text goes here.</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary">Save changes</button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                </div>
+                </div>
             </div>
         </div>
       <!-- Tab panes -->
@@ -131,10 +287,11 @@
         <div class="tab-pane fade show active" id="active">
             <!-- Responsive table starts here -->
             <!-- For correct display on small screens you must add 'data-title' to each 'td' in your table -->
-            <div class="table-responsive-vertical shadow-z-1">
+            <div>
+                <div class="boxLoading"></div>
                 <!-- Table starts here -->
-                <table class="table table-hover table-mc-light-blue">
-                    <thead>
+                <table id="active-table" class="table table-hover table-sm table-striped table-bordered dt-responsive nowrap" style="width: 100%;">
+                    <!-- <thead class="badge-dark">
                         <tr id="active-th">
                             <th>ID</th>
                             <th>Name</th>
@@ -145,7 +302,7 @@
                     <tbody id="active-tbody">
                         <tr id="active-tbody-tr" class="d-none">
                         </tr>
-                    </tbody>
+                    </tbody> -->
                 </table>
             </div>        
         </div>
@@ -172,12 +329,14 @@
             </div>  
         </div>
       </div>
+      <div class="mb-4"></div>
     </div><!-- /.container -->
     <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
     <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.3/js/bootstrap.min.js"></script>
-        
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>   <!-- For Tooltip -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.3/js/bootstrap.min.js"></script> <!-- Bootstrap -->
+    <script src="https://cdn.datatables.net/v/bs4/dt-1.10.16/r-2.2.1/datatables.min.js"></script>
     <script src="https://www.gstatic.com/firebasejs/4.9.1/firebase.js"></script>
-    <script src="assets/js/main.js"></script>        
+    <script src="assets/js/main.js"></script>    
   </body>
 </html>
