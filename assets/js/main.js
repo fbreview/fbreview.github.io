@@ -176,30 +176,35 @@ firebase.auth().onAuthStateChanged(function(firebaseUser) {
                     tableHeaderBool = false;
                     table_data.push(table_row);
                 });
-                if ( $.fn.dataTable.isDataTable( '#active-table' ) ) {
-                    datatable = $('#active-table').DataTable();
-
-                    datatable.clear().draw();
-                    datatable.rows.add(table_data); // Add new data
-                    datatable.columns.adjust().draw(); // Redraw the DataTable
-
-                    // $('#active-table').DataTable().fnClearTable().fnAddData(table_data);
-
+                if (table_data.length > 0) {
+                    if ( $.fn.dataTable.isDataTable( '#active-table' ) ) {
+                        datatable = $('#active-table').DataTable();
+    
+                        datatable.clear().draw();
+                        datatable.rows.add(table_data); // Add new data
+                        datatable.columns.adjust().draw(); // Redraw the DataTable
+    
+                        // $('#active-table').DataTable().fnClearTable().fnAddData(table_data);
+    
+                    }else{
+                        // Add all the data into datatables
+                        $('#active-table').DataTable( {
+                            columns: table_header,
+                            data: table_data,
+                            "order": [[ 0, "desc" ]],
+                            "createdRow": function( row, data, dataIndex){
+                                $(data[3]).text() ==  `No` ? $(row).addClass('text-white bg-danger') : null;  // when paid = No
+                                $(data[3]).text() ==  `Not Fully` ? $(row).addClass('bg-warning') : null;   // when paid = Not Fully
+                                $(row).attr('id', table_rowID[dataIndex]); // set id as key to data inside firebase DB
+                            },
+                            "initComplete": function(settings, json) {
+                                $('.boxLoading').hide();
+                            }
+                        } );
+                    }
                 }else{
-                    // Add all the data into datatables
-                    $('#active-table').DataTable( {
-                        columns: table_header,
-                        data: table_data,
-                        "order": [[ 0, "desc" ]],
-                        "createdRow": function( row, data, dataIndex){
-                            $(data[3]).text() ==  `No` ? $(row).addClass('text-white bg-danger') : null;  // when paid = No
-                            $(data[3]).text() ==  `Not Fully` ? $(row).addClass('bg-warning') : null;   // when paid = Not Fully
-                            $(row).attr('id', table_rowID[dataIndex]); // set id as key to data inside firebase DB
-                        },
-                        "initComplete": function(settings, json) {
-                            $('.boxLoading').hide();
-                        }
-                    } );
+                    $(".NoData").show();
+                    $('.boxLoading').hide();
                 }
             });
         }
