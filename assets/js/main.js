@@ -228,7 +228,11 @@ function editmodal(RowKey, row_index){
     $(".edit-Modaldata").each(function(i, obj){
         if (obj.nodeName.toLowerCase() === 'select') {
             for (var j = 0; j < obj.options.length; j++) {
-                if (obj.options[j].text === rowDATA[i]) {
+                console.log('------------------------------------');
+                console.log(obj.options[j].value);
+                console.log(rowDATA[i]);
+                console.log('------------------------------------');
+                if (obj.options[j].value === rowDATA[i]) {
                     obj.selectedIndex = j;
                     break;
                 }
