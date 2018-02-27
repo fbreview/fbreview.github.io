@@ -26,7 +26,7 @@ newData = {
     c_cost : document.getElementById('add-cost'),
     d_paid : document.getElementById('add-paid'),
     e_recieved : document.getElementById('add-recieved'),
-    f_facebookLink : document.getElementById('add-facebook'),
+    f_sellerName : document.getElementById('add-sellername'),
     g_sellerEmail : document.getElementById('add-selleremail'),
     h_amazonLink : document.getElementById('add-amazon'),
     i_refund : document.getElementById('add-refund'),
@@ -41,7 +41,7 @@ editedData = {
     c_cost : document.getElementById('edit-cost'),
     d_paid : document.getElementById('edit-paid'),
     e_recieved : document.getElementById('edit-recieved'),
-    f_facebookLink : document.getElementById('edit-facebook'),
+    f_sellerName : document.getElementById('edit-sellername'),
     g_sellerEmail : document.getElementById('edit-selleremail'),
     h_amazonLink : document.getElementById('edit-amazon'),
     i_refund : document.getElementById('edit-refund'),
@@ -158,13 +158,13 @@ firebase.auth().onAuthStateChanged(function(firebaseUser) {
                             switch (Capitalkey) {
                                 case "FacebookLink":
                                 case "AmazonLink":
-                                    table_row.push("<a class='td-access"+current_row_index+"' href="+value[key]+">"+value[key]+"</a>");
+                                    table_row.push("<a class='d-inline td-access"+current_row_index+"' href="+value[key]+">"+value[key]+"</a>");
                                     break;
                                 case "SellerEmail":
-                                    table_row.push("<a class='td-access"+current_row_index+"' href=mailto:"+value[key]+">"+value[key]+"</a>");
+                                    table_row.push("<a class='d-inline td-access"+current_row_index+"' href=mailto:"+value[key]+">"+value[key]+"</a>");
                                     break;
                                 default:
-                                    table_row.push("<div class='td-access"+current_row_index+"'>"+value[key]+"</div>");
+                                    table_row.push("<div class='d-inline td-access"+current_row_index+"'>"+value[key]+"</div>");
                                     break;
                             }
                         }

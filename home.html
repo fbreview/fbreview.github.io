@@ -101,10 +101,8 @@
                                 <input id="add-recieved" type="text" pattern="\d*" maxlength="5" class="form-control mb-2" name="recieved-form" placeholder="Enter Amount" required>
                             </div>
                             <div class="col-6 col-sm-4 col-auto">
-                                <label for="inlineFormInputGroup">Facebook Link
-                                    <span data-toggle="tooltip" data-placement="top" title="Link to facebook chat, this way it's easier to find seller." class="fui-question-circle"></span>
-                                </label>
-                                <input id="add-facebook" type="text" maxlength="200" class="form-control mb-2" name="facebook-form" placeholder="Message Link">
+                                <label for="inlineFormInputGroup">Seller Name</label>
+                                <input id="add-sellername" type="text" maxlength="200" class="form-control mb-2" name="sellername-form" placeholder="Seller name">
                             </div>
                             <div class="col-6 col-sm-4 col-auto">
                                 <label for="inlineFormInputGroup">Seller Email</label>
@@ -123,13 +121,16 @@
                             </div>
                             <div class="col-6 col-sm-4 col-auto">
                                 <label for="inlineFormInputGroup">Refund type
-                                    <span data-toggle="tooltip" data-placement="top" title="How seller wants to pay you." class="fui-question-circle"></span>
+                                    <span data-toggle="tooltip" data-placement="top" title="How seller wants to pay you. PP = Via Paypal. GC = Via Gift Card" class="fui-question-circle"></span>
                                 </label>
                                 <select id="add-refund" class="form-control custom-select mb-2" name="refund-form" required>
                                     <option value="">Choose...</option>
-                                    <option value="After order">After Order</option>
-                                    <option value="After Ship">After Ship</option>
-                                    <option value="After Review">After Review</option>
+                                    <option value="After order PP">After Order (PP)</option>
+                                    <option value="After Ship PP">After Ship (PP)</option>
+                                    <option value="After Review PP">After Review (PP)</option>
+                                    <option value="After order GC">After Order (GC)</option>
+                                    <option value="After Ship GC">After Ship (GC)</option>
+                                    <option value="After Review GC">After Review (GC)</option>
                                 </select>
                             </div>
                             <div class="col-6 col-sm-4 col-auto">
@@ -204,10 +205,8 @@
                                 <input id="edit-recieved" type="text" pattern="\d*" maxlength="5" class="form-control mb-2 edit-Modaldata" name="recieved-form" placeholder="Enter Amount" required>
                             </div>
                             <div class="col-6 col-sm-4 col-auto">
-                                <label for="inlineFormInputGroup">Facebook Link
-                                    <span data-toggle="tooltip" data-placement="top" title="Link to facebook chat, this way it's easier to find seller." class="fui-question-circle"></span>
-                                </label>
-                                <input id="edit-facebook" type="text" maxlength="200" class="form-control mb-2 edit-Modaldata" name="facebook-form" placeholder="Message Link">
+                                <label for="inlineFormInputGroup">Seller Name</label>
+                                <input id="edit-sellername" type="text" maxlength="200" class="form-control mb-2 edit-Modaldata" name="sellername-form" placeholder="Seller name">
                             </div>
                             <div class="col-6 col-sm-4 col-auto">
                                 <label for="inlineFormInputGroup">Seller Email</label>
@@ -230,9 +229,12 @@
                                 </label>
                                 <select id="edit-refund" class="form-control custom-select mb-2 edit-Modaldata" name="refund-form" required>
                                     <option value="">Choose...</option>
-                                    <option value="After order">After Order</option>
-                                    <option value="After Ship">After Ship</option>
-                                    <option value="After Review">After Review</option>
+                                    <option value="After order PP">After Order (PP)</option>
+                                    <option value="After Ship PP">After Ship (PP)</option>
+                                    <option value="After Review PP">After Review (PP)</option>
+                                    <option value="After order GC">After Order (GC)</option>
+                                    <option value="After Ship GC">After Ship (GC)</option>
+                                    <option value="After Review GC">After Review (GC)</option>
                                 </select>
                             </div>
                             <div class="col-6 col-sm-4 col-auto">
