@@ -284,7 +284,7 @@
                     // Handle Errors here
                     var errorCode = error.code;
                     var errorMessage = error.message;
-                    errorMessage = errorCode === 'auth/wrong-password' ? "Wrong password." : "Invalid email address.";
+                    errorMessage = errorCode === 'auth/wrong-password' ? "Wrong password." : "Invalid email address. Make sure that you don't have any spaces after your email.";
                     showError(errorMessage);
                 });
             })

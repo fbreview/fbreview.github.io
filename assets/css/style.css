@@ -69,3 +69,26 @@
 
 
 /* -- Material Design Table style -------------- */
+
+/* "+" icon on each row */
+table.dataTable.dtr-inline.collapsed>tbody>tr[role="row"]>td:first-child:before, 
+table.dataTable.dtr-inline.collapsed>tbody>tr[role="row"]>th:first-child:before{
+  top:5px !important;
+}
+
+.restrict-width{
+  display:block !important; 
+  max-width:180px; 
+  overflow-x: scroll;
+}
+/* Mobile screens */
+@media screen and (max-width: 1080px) {
+  tbody{
+    font-size: 12px;
+  }
+  .restrict-width{
+    display: inline;
+    max-width: 100%;
+    overflow-x: hidden;
+  }
+}

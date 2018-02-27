@@ -51,6 +51,7 @@ editedData = {
 var AddFieldButton = document.getElementById('add-field');
 var SubmitNewDataButton = document.getElementById('add-data');
 var SubmitEditDataButton = document.getElementById('edit-data-button');
+var SubmitDeleteDataButton = document.getElementById('delete-data-button');
 var currentRowKey = '';
 
 
@@ -96,6 +97,7 @@ SubmitNewDataButton.addEventListener('click', function(){
     var user = firebase.auth().currentUser;
     var dataref  = database.ref('users/'+user.uid).child('data').push();
     dataref.set(newData);
+    $('#AddModal').modal('hide');
 });
 
 // ===================== Edit the old entry =====================
@@ -107,9 +109,6 @@ SubmitEditDataButton.addEventListener('click', function(){
             editedDataArray[k] = editedData[k].value;
         }
     }
-    console.log('------------------------------------');
-    console.log(editedDataArray);
-    console.log('------------------------------------');
     var updates = {};
     var user = firebase.auth().currentUser;
     updates['users/'+user.uid+"/data/"+currentRowKey] = editedDataArray;
@@ -119,6 +118,32 @@ SubmitEditDataButton.addEventListener('click', function(){
         console.log('------------------------------------');
         // showAlert('alert-danger', "Cannot update data right now. Please try again later.");
     });
+    // showAlert('alert-success', "Successfully updated!");
+    $('#EditModal').modal('hide');
+});
+
+
+// ===================== Delete the current entry =====================
+SubmitDeleteDataButton.addEventListener('click', function(){
+    var user = firebase.auth().currentUser;
+    var dataref = database.ref('users/'+user.uid+'/data');
+    dataref.child(currentRowKey).remove();
+    //get the value of each field
+    // editedDataArray = {};
+    // for (var k in editedData){
+    //     if (editedData.hasOwnProperty(k)) {
+    //         editedDataArray[k] = editedData[k].value;
+    //     }
+    // }
+    // var updates = {};
+    // var user = firebase.auth().currentUser;
+    // updates['users/'+user.uid+"/data/"+currentRowKey] = editedDataArray;
+    // database.ref().update(updates, function(error) {
+    //     console.log('----------------error--------------------');
+    //     console.log(error);
+    //     console.log('------------------------------------');
+    //     // showAlert('alert-danger', "Cannot update data right now. Please try again later.");
+    // });
     // showAlert('alert-success', "Successfully updated!");
     $('#EditModal').modal('hide');
 });
@@ -156,12 +181,11 @@ firebase.auth().onAuthStateChanged(function(firebaseUser) {
                                 table_header.push({title: Capitalkey});
                             }
                             switch (Capitalkey) {
-                                case "FacebookLink":
                                 case "AmazonLink":
-                                    table_row.push("<a class='d-inline td-access"+current_row_index+"' href="+value[key]+">"+value[key]+"</a>");
+                                    table_row.push("<a class='restrict-width td-access"+current_row_index+"' href="+value[key]+">"+value[key]+"</a>");
                                     break;
                                 case "SellerEmail":
-                                    table_row.push("<a class='d-inline td-access"+current_row_index+"' href=mailto:"+value[key]+">"+value[key]+"</a>");
+                                    table_row.push("<a class='restrict-width td-access"+current_row_index+"' href=mailto:"+value[key]+">"+value[key]+"</a>");
                                     break;
                                 default:
                                     table_row.push("<div class='d-inline td-access"+current_row_index+"'>"+value[key]+"</div>");
@@ -228,10 +252,6 @@ function editmodal(RowKey, row_index){
     $(".edit-Modaldata").each(function(i, obj){
         if (obj.nodeName.toLowerCase() === 'select') {
             for (var j = 0; j < obj.options.length; j++) {
-                console.log('------------------------------------');
-                console.log(obj.options[j].value);
-                console.log(rowDATA[i]);
-                console.log('------------------------------------');
                 if (obj.options[j].value === rowDATA[i]) {
                     obj.selectedIndex = j;
                     break;

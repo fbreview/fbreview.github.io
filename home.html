@@ -257,7 +257,11 @@
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <button id="edit-delete" type="button" class="btn btn-danger mr-auto" data-toggle="modal" data-target="#DeleteModal">Delete</button>
+                            <!-- Are you sure buttons -->
+                            <button id="areyousure-button" type="button" class="btn btn-danger mr-auto" style="display:none;">Confirm</button>
+                            <button id="canceldelete-button" type="button" class="btn btn-danger mr-auto" style="display:none;">Cancel</button>
+
+                        <button id="delete-data-button" type="button" class="btn btn-danger mr-auto" data-toggle="modal" data-target="#DeleteModal">Delete</button>
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                         <button id="edit-data-button" type="submit" name="submit" class="btn btn-primary">Submit</button>
                     </div>
