@@ -52,6 +52,9 @@ var AddFieldButton = document.getElementById('add-field');
 var SubmitNewDataButton = document.getElementById('add-data');
 var SubmitEditDataButton = document.getElementById('edit-data-button');
 var SubmitDeleteDataButton = document.getElementById('delete-data-button');
+var AreYouSureButton = document.getElementById('areyousure-button');
+var CancelDeleteButton = document.getElementById('canceldelete-button');
+
 var currentRowKey = '';
 
 
@@ -81,9 +84,10 @@ logoutbtn.addEventListener('click', function(){
 // ===================== Submit new entry =====================
 SubmitNewDataButton.addEventListener('click', function(){
     //get the value of each field
+    newDataArray = {};
     for (var k in newData){
         if (newData.hasOwnProperty(k)) {
-            newData[k] = newData[k].value;
+            newDataArray[k] = newData[k].value;
         }
     }
     var now     = new Date(),
@@ -93,10 +97,10 @@ SubmitNewDataButton.addEventListener('click', function(){
     if (hours > 12) {
         hours = hours - 12;
     }
-    newData['a_date'] = now.toLocaleDateString()+" "+hours+":"+minutes+" "+ampm;
+    newDataArray['a_date'] = now.toLocaleDateString()+" "+hours+":"+minutes+" "+ampm;
     var user = firebase.auth().currentUser;
     var dataref  = database.ref('users/'+user.uid).child('data').push();
-    dataref.set(newData);
+    dataref.set(newDataArray);
     $('#AddModal').modal('hide');
 });
 
@@ -127,25 +131,14 @@ SubmitEditDataButton.addEventListener('click', function(){
 SubmitDeleteDataButton.addEventListener('click', function(){
     var user = firebase.auth().currentUser;
     var dataref = database.ref('users/'+user.uid+'/data');
-    dataref.child(currentRowKey).remove();
-    //get the value of each field
-    // editedDataArray = {};
-    // for (var k in editedData){
-    //     if (editedData.hasOwnProperty(k)) {
-    //         editedDataArray[k] = editedData[k].value;
-    //     }
-    // }
-    // var updates = {};
-    // var user = firebase.auth().currentUser;
-    // updates['users/'+user.uid+"/data/"+currentRowKey] = editedDataArray;
-    // database.ref().update(updates, function(error) {
-    //     console.log('----------------error--------------------');
-    //     console.log(error);
-    //     console.log('------------------------------------');
-    //     // showAlert('alert-danger', "Cannot update data right now. Please try again later.");
-    // });
-    // showAlert('alert-success', "Successfully updated!");
-    $('#EditModal').modal('hide');
+    var r = confirm("Are you sure you wanna delete this entry?");
+    if (r == true) {
+        dataref.child(currentRowKey).remove();
+        // $('#EditModal').modal('hide');
+        location.reload();
+    } else {
+        //cancelled
+    }
 });
 
 // ===================== Add new field to form ==================
@@ -159,7 +152,6 @@ firebase.auth().onAuthStateChanged(function(firebaseUser) {
     if (!firebaseUser) {
         window.location = 'index.html?user=logout'; // If not logged in, User will get pushed back to index.html
     }else{
-        var tableHeaderBool = true; 
         var table_header    = [];  
         var table_data      = [];
         var table_rowID     = [];
@@ -168,16 +160,20 @@ firebase.auth().onAuthStateChanged(function(firebaseUser) {
             var db_ref  = database.ref('users/'+user.uid+"/data");
             db_ref.on('value', function(snapshot) {
                 table_data = [];
+                var child_counter = -1;
+                //get table header and table data
                 snapshot.forEach(function(childSnapshot) {
+                    child_counter++;
                     var value = childSnapshot.val();                    
                     var table_row = [];
-                    var current_row_index = table_data.length;
+                    var current_row_index = table_data.length;  //Used to give different class name to different row
                     table_rowID.push(childSnapshot.key);
                     // Create new row 
                     for (var key in value) {
                         if (value.hasOwnProperty(key)) {
                             Capitalkey = capitalizeFirstLetter(key);
-                            if (tableHeaderBool) {
+                            //Last iteration of the loop
+                            if (child_counter == snapshot.numChildren()-1){ 
                                 table_header.push({title: Capitalkey});
                             }
                             switch (Capitalkey) {
@@ -193,23 +189,19 @@ firebase.auth().onAuthStateChanged(function(firebaseUser) {
                             }
                         }
                     }
-                    if (tableHeaderBool) {
-                        table_header.push({title: "Edit"});
-                    }
                     table_row.push("<button class='btn btn-primary' onClick='editmodal(\""+childSnapshot.key+"\","+current_row_index+")'>Edit</button>");    //Add the edit button to the column
-                    tableHeaderBool = false;
                     table_data.push(table_row);
                 });
+                if (child_counter >= 0) {   //if there is any child data present
+                    table_header.push({title: "Edit"}); //Add edit column to header
+                }
+                //Use that table header and table data to create datatable
                 if (table_data.length > 0) {
                     if ( $.fn.dataTable.isDataTable( '#active-table' ) ) {
                         datatable = $('#active-table').DataTable();
-    
                         datatable.clear().draw();
                         datatable.rows.add(table_data); // Add new data
-                        datatable.columns.adjust().draw(); // Redraw the DataTable
-    
-                        // $('#active-table').DataTable().fnClearTable().fnAddData(table_data);
-    
+                        datatable.columns.adjust().draw(); // Redraw the DataTable    
                     }else{
                         // Add all the data into datatables
                         $('#active-table').DataTable( {
