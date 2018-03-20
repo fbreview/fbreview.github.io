@@ -4,14 +4,6 @@
     <meta charset="utf-8">
     <title>Review</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <!-- Adsense -->
-    <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
-    <script>
-      (adsbygoogle = window.adsbygoogle || []).push({
-        google_ad_client: "ca-pub-1295444404672591",
-        enable_page_level_ads: true
-      });
-    </script>
     <!-- Loading Bootstrap -->
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet">
     <!-- Loading Flat UI -->
@@ -49,7 +41,22 @@
             </button>
             <div id="error-message"></div> <!-- Error message is dynamically generated -->
         </div>
+        <!-- For Ads -->
+        <!-- <div class="card">
+            <div class="card-body">
+                <div class="float-left"><img src="/assets/images/bowl.jpg"/></div>
+                <h5 class="card-title">Card title</h5>
+                <h6 class="card-subtitle mb-2 text-muted">Card subtitle</h6>
+                <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                <a href="#" class="card-link">Card link</a>
+                <a href="#" class="card-link">Another link</a>
+            </div>
+        </div> -->
         <h6 id="welcome-user" style="text-transform: capitalize;">Welcome</h6>
+        <label>Funding recieved for this month(out of $25):</label>
+        <div class="progress mb-5">
+            <div class="progress-bar progress-bar-info " role="progressbar" style="width: 25%;" aria-valuenow="5" aria-valuemin="0" aria-valuemax="25">$5</div>
+        </div>
       <!-- Nav tabs -->
         <ul class="nav nav-tabs" style="display:inline-block;">
             <li class="nav-item float-left ">
@@ -323,15 +330,15 @@
             </div>  
         </div>
       </div>
-      <div class="mb-5"></div>
+      <div class="mb-5"></div>   
     </div><!-- /.container -->
-    <footer class="footer-box">
-            <h4 class="d-inline ml-4 paypal-button-title">Donate to me? :)</h4>
+    <footer class="footer-box" style="z-index: 2;">
+            <h4 class="d-inline ml-4 paypal-button-title">Donate to keep the website running? :)</h4>
             <a class="btn paypal-button d-inline" href="https://PayPal.Me/amitozd">
               <span class="paypal-logo">
                 <i>Pay</i><i>Pal</i>
               </span>
-            </a>       
+            </a>  
     </footer>
     <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
     <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
