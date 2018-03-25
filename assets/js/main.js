@@ -12,7 +12,7 @@ firebase.initializeApp(config);
 
 //Show tooltip
 $(function () {
-    $('[data-toggle="tooltip"]').tooltip()
+    $('[data-toggle="tooltip"]').tooltip();
 })
 
 //=========================== Variable declaration ==============================
@@ -90,14 +90,8 @@ SubmitNewDataButton.addEventListener('click', function(){
             newDataArray[k] = newData[k].value;
         }
     }
-    var now     = new Date(),
-        minutes = now.getMinutes().toString().length == 1 ? '0'+now.getMinutes() : now.getMinutes(),
-        hours   = now.getHours().toString().length == 1 ? '0'+now.getHours() : now.getHours(),
-        ampm    = now.getHours() >= 12 ? 'pm' : 'am';
-    if (hours > 12) {
-        hours = hours - 12;
-    }
-    newDataArray['a_date'] = now.toLocaleDateString()+" "+hours+":"+minutes+" "+ampm;
+
+    newDataArray['a_date'] = moment(new Date()).format('MM:DD:YYYY hh:mm a');
     var user = firebase.auth().currentUser;
     var dataref  = database.ref('users/'+user.uid).child('data').push();
     dataref.set(newDataArray);
@@ -182,6 +176,9 @@ firebase.auth().onAuthStateChanged(function(firebaseUser) {
                                     break;
                                 case "SellerEmail":
                                     table_row.push("<a class='restrict-width td-access"+current_row_index+"' href=mailto:"+value[key]+">"+value[key]+"</a>");
+                                    break;
+                                case "Date":
+                                    table_row.push("<span>"+value[key]+"</span>");
                                     break;
                                 default:
                                     table_row.push("<div class='d-inline td-access"+current_row_index+"'>"+value[key]+"</div>");
