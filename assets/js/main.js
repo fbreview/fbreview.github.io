@@ -177,9 +177,6 @@ firebase.auth().onAuthStateChanged(function(firebaseUser) {
                                 case "SellerEmail":
                                     table_row.push("<a class='restrict-width td-access"+current_row_index+"' href=mailto:"+value[key]+">"+value[key]+"</a>");
                                     break;
-                                case "Date":
-                                    table_row.push("<span>"+value[key]+"</span>");
-                                    break;
                                 default:
                                     table_row.push("<div class='d-inline td-access"+current_row_index+"'>"+value[key]+"</div>");
                                     break;
