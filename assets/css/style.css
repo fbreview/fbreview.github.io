@@ -84,6 +84,9 @@ table.dataTable.dtr-inline.collapsed>tbody>tr[role="row"]>th:first-child:before{
   max-width:180px; 
   overflow-x: scroll;
 }
+.ad-image{
+  max-width: 250px;
+}
 /* Mobile screens */
 @media screen and (max-width: 1080px) {
   tbody{
@@ -93,6 +96,9 @@ table.dataTable.dtr-inline.collapsed>tbody>tr[role="row"]>th:first-child:before{
     display: inline;
     max-width: 100%;
     overflow-x: hidden;
+  }
+  .ad-image{
+    max-width: 150px;
   }
 }
 
