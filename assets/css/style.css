@@ -94,7 +94,7 @@ table.dataTable.dtr-inline.collapsed>tbody>tr[role="row"]>th:first-child:before{
   }
   .restrict-width{
     display: inline;
-    max-width: 100%;
+    /* max-width: 100%; */
     overflow-x: hidden;
   }
   .ad-image{
