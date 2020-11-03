@@ -172,10 +172,10 @@ firebase.auth().onAuthStateChanged(function (firebaseUser) {
               }
               switch (Capitalkey) {
                 case "AmazonLink":
-                  table_row.push("<a class='restrict-width td-access" + current_row_index + "' href=" + value[key] + ">" + value[key] + "</a>");
+                  table_row.push("<a class='td-access" + current_row_index + "' href=" + value[key] + ">" + value[key] + "</a>");
                   break;
                 case "SellerEmail":
-                  table_row.push("<a class='restrict-width td-access" + current_row_index + "' href=mailto:" + value[key] + ">" + value[key] + "</a>");
+                  table_row.push("<a class='td-access" + current_row_index + "' href=mailto:" + value[key] + ">" + value[key] + "</a>");
                   break;
                 default:
                   table_row.push("<div class='d-inline td-access" + current_row_index + "'>" + value[key] + "</div>");
